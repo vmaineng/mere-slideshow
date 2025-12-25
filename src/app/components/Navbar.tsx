@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -100,10 +102,104 @@ export function Navbar() {
                 <User className="w-4 h-4" />
                 <span>Profile</span>
               </motion.button>
+
+              <motion.button
+                className="md:hidden p-2 rounded-xl bg-linear-to-r from-pink-100 to-purple-100"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <AnimatePresence mode="wait">
+                  {isMobileMenuOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <X className="w-6 h-6 text-purple-600" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Menu className="w-4 h-5 text-purple-500" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.button>
             </div>
           </div>
         </div>
       </motion.nav>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            <motion.div
+              className="fixed top-16 right-4 bg-white rounded-2xl shadow-2xl z-50 md:hidden overflow-hidden"
+              initial={{ opacity: 0, scale: 0.9, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <div className="p-4 space-y-2">
+                {navLinks.map((link, index) => (
+                  <motion.a
+                    key={link.name}
+                    href={link.href}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-pink-50 hover:to-purple-50 transition-colors group"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    whileHover={{ scale: 1.02, x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <motion.div
+                      className="bg-gradient-to-br from-pink-100 to-purple-100 p-2 rounded-lg"
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <link.icon className="w-5 h-5 text-purple-500" />
+                    </motion.div>
+                    <span className="text-gray-700 group-hover:text-purple-600 transition-colors">
+                      {link.name}
+                    </span>
+                  </motion.a>
+                ))}
+
+                <motion.button
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-linear-to-r from-pink-500 via-purple-500 to-indigo-500 text-white mt-2"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: navLinks.length * 0.1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="bg-white/20 p-2 rounded-lg">
+                    <User className="w-5 h-5" />
+                  </div>
+                  <span>Profile</span>
+                </motion.button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }
