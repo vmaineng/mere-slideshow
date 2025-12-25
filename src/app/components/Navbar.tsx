@@ -45,7 +45,7 @@ export function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            Logo
+            {/* Logo */}
             <motion.div
               className="flex items-center gap-2 cursor-pointer"
               whileHover={{ scale: 1.05 }}
@@ -53,7 +53,9 @@ export function Navbar() {
             >
               <motion.div
                 className="bg-linear-to-br from-pink-400 via-purple-400 to-indigo-400 p-2 rounded-xl"
-                animate={{ rotate: [0, 5, 0, -5, 0] }}
+                animate={{
+                  rotate: [0, 5, 0, -5, 0],
+                }}
                 transition={{
                   duration: 2,
                   repeat: Infinity,
@@ -66,6 +68,7 @@ export function Navbar() {
                 Slidey
               </span>
             </motion.div>
+
             <div className="hidden md:flex items-center gap-1 ml-8 flex-1">
               {navLinks.map((link, index) => (
                 <motion.a
